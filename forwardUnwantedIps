@@ -1,0 +1,31 @@
+
+/*
+  This code will check the client's ip and will redirect unwanted ip addresses to the about:blank page
+*/
+
+const whiteListedIps = ["<enter ip here>"];
+const ipOfClient = httpGetAsync("https://api.ipify.org/", logThis).toString();
+
+if (whiteListedIps.includes(ipOfClient)){
+  
+  console.log("IP is a.okay!")
+} else {
+  
+  window.location.replace("about:blank");
+}
+
+function logThis(logString) {
+    console.log(logString);
+}
+
+function httpGetAsync(theUrl, callback) {
+    let xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            //callback(xmlHttp.responseText);
+        }
+    };
+    xmlHttp.open("GET", theUrl, false);
+    xmlHttp.send(null);
+    return xmlHttp.responseText;
+}
