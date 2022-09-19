@@ -1,0 +1,38 @@
+
+//-> "import" filesystem node.js module
+
+const fs = require("fs");
+const pathToDatabase = "E:/Documents/Javascript/YouTrack/Asset Management/src/database.json";
+
+console.log(readFromFile(pathToDatabase));
+
+//-> read from "database.json" file
+function readFromFile(fileToRead){
+    return JSON.parse(fs.readFileSync(fileToRead), (error) =>{
+        if (error) {
+            console.error(error);
+            return;
+        } else {
+            return;
+        }
+    });
+}
+
+//-> wrtie to "database.json" file
+function writeToFile(fileToWrite, conntentToWrite){
+    fs.writeFileSync(fileToWrite, JSON.stringify(conntentToWrite, null, "   "), (error) => {
+        if (error) {
+            console.error(error);
+            return;
+        } else {
+            return;
+        }
+    })
+}
+
+function updateToFile (conntentToUpdate) {
+    //this function should accept a map of a key to update and it's new value
+}
+
+export {readFromFile};
+export {writeToFile};
