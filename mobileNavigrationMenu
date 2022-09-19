@@ -1,0 +1,358 @@
+<style>
+	.hamburger_menu_icon {
+		display: inline-block;
+		cursor: pointer;
+		padding: auto;
+		position: relative;
+		z-index: 999;
+		left: 25px;
+		top: 25px;
+	}
+	.bar1, .bar2, .bar3 {
+		width: 35px;
+		height: 5px;
+		background-color: white;
+		margin: 6px 0;
+		transition: 0.4s;
+		position: relative;
+	}
+	.change .bar1 {
+		-webkit-transform: rotate(-45deg) translate(-9px, 6px);
+		transform: rotate(-45deg) translate(-9px, 6px);
+	}
+		.change .bar2 {opacity: 0;}
+		.change .bar3 {
+		-webkit-transform: rotate(45deg) translate(-8px, -8px);
+		transform: rotate(45deg) translate(-8px, -8px);
+	}
+</style>
+
+<div id="hamburger_menu_content"></div>
+
+<!-- Begin Mobile Navigation -->
+<script>
+
+	let lastElement = [];
+	let buttonChildren = [];
+	let recentlyUsedList = [];
+
+	const deviceWidth = window.innerWidth;
+	const deviceHeight = window.innerHeight;
+
+	const relevantScreenSize = 1080;
+
+	let isRearranged = false;
+
+	//-> this is the 'menu' as to be used in the website:
+	let menuIcon = {
+	    id: "hamburger_menu_icon",
+	    className: "hamburger_menu_icon",
+	    isExpanded: false,
+	    isFirstClick: true,
+	    documentContent:
+	    `
+	    <div class="hamburger_menu_icon" id="hamburger_menu_icon" onclick="changeMenuIcon(this)">
+	        <div class="bar1"></div>
+	        <div class="bar2"></div>
+	        <div class="bar3"></div>
+	    </div>
+	    `
+	};
+
+    if (deviceWidth <= relevantScreenSize) {
+
+		//-> insert menu icon into html document:
+        document.querySelector("#hamburger_menu_content").insertAdjacentHTML("afterend", menuIcon.documentContent);
+
+		let accordionMenuContentList = [
+	    /*
+	    {
+	        id: "outer_dummy", //-> wird vom Skript zur Darstellung im HTML verwendet
+	        name: "Dummy" //-> ist der Name, welcher dem Nutzer im Browser dargestellt wird
+	        isVisible: false, //-> wird als Flag für die Logik der dynamischen Darstellung (ein- und ausklappen beim Klick) verwendet
+	        isExpanded: false, //-> wird als Flag für die Logik der dynamischen Darstellung (ein- und ausklappen beim Klick) verwendet
+	        children: [
+	            {
+	                id: "inner_dummy", //-> wird vom Skript zur Darstellung im HTML verwendet
+	                name: "Unterpunkt von Dummy", //-> ist der Name, welcher dem Nutzer im Browser dargestellt wird
+	                isVisible: false, //-> wird als Flag für die Logik der dynamischen Darstellung (ein- und ausklappen beim Klick) verwendet
+	                url: "<enter URL here>", //-> Ziel URL, die aufgerufen wird, sollte das Element angeklickt werden
+	                parent: "outer_dummy" //-> Referenz zum Übergeordneten Punkt
+	            }
+	        ] //-> in der Liste können unendliche viele Unterpunkte untergebracht werden
+	
+	    }
+	    */
+	]
+
+	//-> hide given element
+	function hideElement(element) {
+
+		element.style.display = "none";
+		return;
+	}
+	
+	//-> display given element
+	function displayElement(element) {
+
+		element.style.display = "block";
+		return;
+	}
+	
+	//-> trigger animation for menu bars
+	function changeMenuIcon(element) {
+        
+        if (!element) {
+            console.error("changeMenuIcon(element) has no element!");
+        }
+	    element.classList.toggle("change");
+	    displayAccordionButton();
+	    menuIcon.isExpanded = true;
+	    if (!menuIcon.isFirstClick) {
+	        hideAllButtonChildren();
+	        menuIcon.isFirstClick = true;
+	    }else{
+	        menuIcon.isFirstClick = false;
+	    }
+	}
+	
+	//-> add the buttons of the accordion to the menu:
+	function displayAccordionButton() {
+	    if (!menuIcon.isExpanded) {
+	
+	        for (let i = 0; i < accordionMenuContentList.length; i++){
+	            
+	            //-> add the button:
+	            
+	            if (accordionMenuContentList[i].children.length <= 1) {
+	                
+	                document.getElementById(menuIcon.id).insertAdjacentHTML("afterend",`<button class="${accordionMenuContentList[i].id}_button" id= "${accordionMenuContentList[i].id}" onclick="location.href='${accordionMenuContentList[i].children[0].url}';">${accordionMenuContentList[i].name}</button>
+	            <div class="${accordionMenuContentList[i].id}_container" id="${accordionMenuContentList[i].id}_container"></div>`);
+	            } else {
+	
+	                document.getElementById(menuIcon.id).insertAdjacentHTML("afterend",`<button class="${accordionMenuContentList[i].id}_button" id= "${accordionMenuContentList[i].id}" onclick="addToLastElements(this); changeButtonChildren(); updateMostRecent(this) ">${accordionMenuContentList[i].name}</button>
+	            <div class="${accordionMenuContentList[i].id}_container" id="${accordionMenuContentList[i].id}_container"></div>`);
+	            }
+	
+	            //-> style the button:
+	            let outerButtonElement = document.getElementsByClassName(accordionMenuContentList[i].id + "_button")[0];
+	            outerButtonElement.style.fontFamily = ["Helvetica", "Sansserif"];
+	            outerButtonElement.style.textDecoration = "none";
+	            outerButtonElement.style.backgroundColor = "#53292a";
+	            outerButtonElement.style.color = "white";
+	            outerButtonElement.style.cursor = "pointer";
+	            outerButtonElement.style.padding = "18px";
+	            outerButtonElement.style.width = "90%";
+	            outerButtonElement.style.border = "none";
+	            outerButtonElement.style.textAlign = "left";
+	            outerButtonElement.style.fontSize = "20px";
+	            outerButtonElement.style.transition = "0.4s";
+	            outerButtonElement.style.hover = "#3e3e3e";
+	            outerButtonElement.style.position = "relative";
+	            outerButtonElement.style.left = "50px";
+	            outerButtonElement.style.top = "50px";
+	            outerButtonElement.style.zIndex = "99";
+
+				displayElement(outerButtonElement);
+	
+	            //-> change background color on mouse hover:
+	            outerButtonElement.onmouseover = function() {
+	
+	                this.style.backgroundColor = "#3e3e3e";
+	            }
+	            outerButtonElement.onmouseleave = function() {
+	    
+	                this.style.backgroundColor = "#53292a";
+	            }
+	
+	            //-> change background color on touch:
+	            outerButtonElement.ontouchstart = function() {
+	
+	                this.style.backgroundColor = "#3e3e3e";
+	            }
+	            outerButtonElement.ontouchmove = function() {
+	
+	                this.style.backgroundColor = "#3e3e3e";
+	            }
+	            outerButtonElement.ontouchend = function() {
+	    
+	                this.style.backgroundColor = "#53292a";
+	            }
+	
+	            //-> style the container for the links:
+	            let containerElement = document.getElementsByClassName(accordionMenuContentList[i].id + "_container")[0];
+	            containerElement.style.backgroundColor = "#53292a";
+	            containerElement.style.color = "white";
+	            containerElement.style.position = "relative";
+	            containerElement.style.left = "50px";
+	            containerElement.style.width = "90%";
+	            containerElement.style.top = "50px";
+	
+	            //-> create child options, if there are more than one:
+	            if (accordionMenuContentList[i].children.length > 1) {
+	                createButtonChildren(containerElement);
+	            }
+	
+	            accordionMenuContentList[i].isVisible = true;
+	        }
+	        //-> insert accordion into html document:
+	        menuIcon.isExpanded = true;
+	    } else {
+	        
+	        let elementList = [];
+	        for (let outerCount = 0; outerCount < accordionMenuContentList.length; outerCount++){
+	            
+	            let elementClasses = document.getElementsByClassName(accordionMenuContentList[outerCount].id+ "_button");
+	            for (let innerCount = 0; innerCount < elementClasses.length; innerCount++) {
+	                
+	                elementList.push(elementClasses[innerCount]);
+	            }
+	        }
+	        for (let i = 0; i < elementList.length; i++) {
+	
+	            if (elementList[i].style.display === "block") {
+	                
+	                hideElement(elementList[i]);
+	                accordionMenuContentList[i].isVisible = false;
+	            } else {
+	                
+	                displayElement(elementList[i]);
+	                accordionMenuContentList[i].isVisible = true;
+	            }
+	        }
+	    }
+	}
+
+	function createButtonChildren(element) {	    
+        
+        if (!element) {
+            console.error("createButtonChildren(element) has no element!");
+        }
+	    let findMyElement = (myElement) => myElement.id === element.id.toString().replace("_container", "")
+	    let relevantIndex = accordionMenuContentList.findIndex(findMyElement)
+	    let accordionMenuContentChildren = accordionMenuContentList[relevantIndex].children;
+	
+	    for (let i = 0; i < accordionMenuContentChildren.length; i++) {
+	        
+	        document.getElementById(element.id).insertAdjacentHTML("beforeend",
+	            `<a href="${accordionMenuContentChildren[i].url}" id="${accordionMenuContentChildren[i].id}">${accordionMenuContentChildren[i].name}</a>`
+	        );
+	
+	        let innerHrefElement = document.getElementById(accordionMenuContentChildren[i].id);
+	        innerHrefElement.style.fontFamily = ["Helvetica", "Sansserif"];
+	        innerHrefElement.style.textDecoration = "none";
+	        innerHrefElement.style.backgroundColor = "#53292a";
+	        innerHrefElement.style.color = "white";
+	        innerHrefElement.style.cursor = "pointer";
+	        innerHrefElement.style.width = "97.9%";
+	        innerHrefElement.style.padding = "18px";
+	        innerHrefElement.style.border = "none";
+	        innerHrefElement.style.textAlign = "left";
+	        innerHrefElement.style.fontSize = "15px";
+	        innerHrefElement.style.transition = "0.4s";
+	        innerHrefElement.style.position = "relative";
+	        innerHrefElement.style.top = "relative";
+			innerHrefElement.style.zIndex = "99";
+
+			hideElement(innerHrefElement);
+	
+	        innerHrefElement.onmouseover = function() {
+	
+	            this.style.backgroundColor = "#3e3e3e";
+	        }
+	        innerHrefElement.onmouseleave = function() {
+	
+	            this.style.backgroundColor = "#53292a";
+	        }
+	
+	        accordionMenuContentChildren[i].parent = element.id;
+	        accordionMenuContentChildren[i].isVisible = false;
+	        buttonChildren.push(innerHrefElement);
+	    }
+	}
+	
+	function addToLastElements(element) {
+	
+        if (!element) {
+            console.error("addToLastElements(element) has no element!");
+        }
+	    lastElement.push(element);
+	}
+	
+	function hideAllButtonChildren(){
+	
+	    for (let i = 0; i < buttonChildren.length; i++) {
+	
+	        hideElement(document.getElementById(buttonChildren[i].id));
+	    }
+	}
+	
+	function changeButtonChildren() {
+	
+	    if (lastElement.length == 0) {
+	
+	        return;
+	    } else {
+
+			let findMyElement = (myElement) => myElement.id === lastItemOfList (lastElement).id;
+			let relevantIndex = accordionMenuContentList.findIndex(findMyElement);
+			let accordionMenuContentChildren = accordionMenuContentList[relevantIndex].children;		
+			for (let i = 0; i < accordionMenuContentChildren.length; i++){
+		
+				let relevantElement = document.getElementById(accordionMenuContentChildren[i].id);
+				if (relevantElement.style.display === "block") {
+					
+					hideElement(relevantElement);
+					accordionMenuContentList[relevantIndex].isExpanded = false;
+					accordionMenuContentList[relevantIndex].children[i].isVisible = false;
+				} else {
+		
+					displayElement(relevantElement);
+					accordionMenuContentList[relevantIndex].isExpanded = true;
+					accordionMenuContentList[relevantIndex].children[i].isVisible = true;
+				}
+			}
+		}
+	}
+	
+	function updateMostRecent(element) {
+	
+        if (!element) {
+            console.error("updateMostRecent(element) has no element!");
+        }
+	    recentlyUsedList.push(element);
+	    if (recentlyUsedList.length > 1) {
+	
+	        hideMostRecent(recentlyUsedList[0]);
+	    } else if (recentlyUsedList.length > 2) {
+	        console.error("Two many recently selected elements found!")
+	    }
+	}
+	
+	function hideMostRecent(element) {
+	
+        if (!element) {
+            console.error("hideMostRecent(element) has no element!");
+        }
+	    let findMyElement = (myElement) => myElement.id === element.id.replace("_button", "_container");
+	    let relevantIndex = accordionMenuContentList.findIndex(findMyElement);
+	    let accordionMenuContentChildren = accordionMenuContentList[relevantIndex].children;
+	    
+	    for (let i = 0; i < accordionMenuContentChildren.length; i++){
+	
+	        let relevantElement = document.getElementById(accordionMenuContentChildren[i].id);
+	        if (relevantElement.style.display === "block") {
+	            
+	            hideElement(relevantElement);
+	        }
+	    }
+	    recentlyUsedList.shift();
+	}
+	
+	function lastItemOfList (list) {
+	
+	    return list[list.length - 1];
+	}
+
+</script>
+<!-- End Mobile Navigation -->
