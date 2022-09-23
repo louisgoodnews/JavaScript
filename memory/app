@@ -1,0 +1,256 @@
+const cardstack = [
+    {
+        "id": "",
+        "name": "flower",
+        "frontpicture": "/fronpicture(8).jpg",
+        "backpicture": "/backpicture(1).jpg",
+        "isFlipped": false,
+        "isSolved": false
+    },
+    {
+        "id": "",
+        "name": "quote",
+        "frontpicture": "/fronpicture(7).jpg",
+        "backpicture": "/backpicture(1).jpg",
+        "isFlipped": false,
+        "isSolved": false
+    },
+    {
+        "id": "",
+        "name": "landscape",
+        "frontpicture": "/fronpicture(6).jpg",
+        "backpicture": "/backpicture(1).jpg",
+        "isFlipped": false,
+        "isSolved": false
+    },
+    {
+        "id": "",
+        "name": "flowers",
+        "frontpicture": "/fronpicture(5).jpg",
+        "backpicture": "/backpicture(1).jpg",
+        "isFlipped": false,
+        "isSolved": false
+    },
+    {
+        "id": "",
+        "name": "ties",
+        "frontpicture": "/fronpicture(4).jpg",
+        "backpicture": "/backpicture(1).jpg",
+        "isFlipped": false,
+        "isSolved": false
+    },
+    {
+        "id": "",
+        "name": "computer",
+        "frontpicture": "/fronpicture(3).jpg",
+        "backpicture": "/backpicture(1).jpg",
+        "isFlipped": false,
+        "isSolved": false
+    },
+    {
+        "id": "",
+        "name": "skyline",
+        "frontpicture": "/fronpicture(2).jpg",
+        "backpicture": "/backpicture(1).jpg",
+        "isFlipped": false,
+        "isSolved": false
+    },
+    {
+        "id": "",
+        "name": "spider",
+        "frontpicture": "/fronpicture(1).jpg",
+        "backpicture": "/backpicture(1).jpg",
+        "isFlipped": false,
+        "isSolved": false
+    },
+    {
+        "id": "",
+        "name": "flower",
+        "frontpicture": "/fronpicture(8).jpg",
+        "backpicture": "/backpicture(1).jpg",
+        "isFlipped": false,
+        "isSolved": false
+    },
+    {
+        "id": "",
+        "name": "quote",
+        "frontpicture": "/fronpicture(7).jpg",
+        "backpicture": "/backpicture(1).jpg",
+        "isFlipped": false,
+        "isSolved": false
+    },
+    {
+        "id": "",
+        "name": "landscape",
+        "frontpicture": "/fronpicture(6).jpg",
+        "backpicture": "/backpicture(1).jpg",
+        "isFlipped": false,
+        "isSolved": false
+    },
+    {
+        "id": "",
+        "name": "flowers",
+        "frontpicture": "/fronpicture(5).jpg",
+        "backpicture": "/backpicture(1).jpg",
+        "isFlipped": false,
+        "isSolved": false
+    },
+    {
+        "id": "",
+        "name": "ties",
+        "frontpicture": "/fronpicture(4).jpg",
+        "backpicture": "/backpicture(1).jpg",
+        "isFlipped": false,
+        "isSolved": false
+    },
+    {
+        "id": "",
+        "name": "computer",
+        "frontpicture": "/fronpicture(3).jpg",
+        "backpicture": "/backpicture(1).jpg",
+        "isFlipped": false,
+        "isSolved": false
+    },
+    {
+        "id": "",
+        "name": "skyline",
+        "frontpicture": "/fronpicture(2).jpg",
+        "backpicture": "/backpicture(1).jpg",
+        "isFlipped": false,
+        "isSolved": false
+    },
+    {
+        "id": "",
+        "name": "spider",
+        "frontpicture": "/fronpicture(1).jpg",
+        "backpicture": "/backpicture(1).jpg",
+        "isFlipped": false,
+        "isSolved": false
+    }
+]
+
+document.addEventListener("DOMContentLoaded", ()=>{
+
+    randomizeSort();
+    const gameBoard = document.getElementById("game_board");    
+    cardstack.forEach((cardObject)=>{
+
+        let cardObjectId = generateId();
+
+        let cardElement = document.createElement("img");
+        cardElement.setAttribute("id", cardObjectId);
+        cardElement.setAttribute("class", "game_board, game_board_cards");
+        cardElement.setAttribute("src", cardObject.backpicture);
+        cardElement.setAttribute("onclick", "flipCardElement(this)");
+        cardObject.id = cardObjectId;
+        gameBoard.append(cardElement);
+    })
+});
+
+function flipCardElement(cardElement){
+
+    if (areCardsLeft()){
+
+        console.log("Congratulations, the game has beenn completed!");
+        return;
+    }
+    const flippedObjects = getFlipped();
+    if(flippedObjects.length > 1){
+
+        flippedObjects.forEach((cardObject)=>{
+
+            let cardElement = document.getElementById(cardObject.id);
+            cardElement.src = "/backpicture(1).jpg";
+            cardObject.isFlipped = false;
+        })
+    }
+
+    let relevantObject = cardstack.find((cardObject)=> cardObject.id === cardElement.id);
+    if(!relevantObject.isFlipped){
+
+        cardElement.src = relevantObject.frontpicture;
+        relevantObject.isFlipped = true;
+    }
+    if (checkForMatch()){
+
+        let previousScore = document.getElementById("Score").innerHTML;
+        document.getElementById("Score").innerHTML = previousScore += 1;
+    }
+    return;
+}
+
+function randomizeSort(){
+    cardstack.sort(()=> 0,5 - Math.random());
+    return;
+}
+
+function areCardsLeft(){
+
+    let solvedCards = cardstack.filter((cardObject)=> cardObject.isSolved).length;
+    if (solvedCards == cardstack.length){
+        
+        return true;
+    } else {
+
+        return false;
+    }
+}
+
+function checkForMatch(){
+
+    const flippedCards = cardstack.filter((cardObject)=> cardObject.isFlipped && !cardObject.isSolved);
+    let = relevantObjects = [];
+    flippedCards.forEach((cardObject)=>{
+
+        if (relevantObjects.length === 0){
+
+            relevantObjects.push(cardObject);
+        } else if (relevantObjects.find((relevantObject)=> relevantObject.name === cardObject.name && relevantObject.id != cardObject.id)){
+
+            relevantObjects.push(cardObject);
+        }
+    })
+
+    if (relevantObjects.length === 2){
+        
+        relevantObjects.forEach((cardObject)=>{
+
+            cardObject.isSolved = true;
+        });
+        return true;
+    }
+    relevantObjects = [];
+    return false;
+}
+
+function getFlipped(){
+    return cardstack.filter((cardObject)=> cardObject.isFlipped && !cardObject.isSolved);
+}
+
+function generateId(){
+    const upperCaseLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+    const lowerCaseLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "o", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    const digits = [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    let result = [];
+    for (let i = 0; i < 16; i++){
+
+        let selector = getRandomInt(3);
+        switch(selector){
+            case(1):
+                result.push(upperCaseLetters[getRandomInt(upperCaseLetters.length)])
+                break;
+            case(2):
+            result.push(lowerCaseLetters[getRandomInt(lowerCaseLetters.length)])
+                break;
+            case(3):
+            result.push(digits[getRandomInt(digits.length)])
+                break;
+        }
+    }
+    return result.join("");
+}
+
+function getRandomInt(max) {
+
+    return Math.floor(Math.random() * max);
+}
