@@ -1,0 +1,12 @@
+
+/*
+  This method executes a asynchronus GET request and returns the data as json. Can be implemented as follows:
+  
+  var getRequest = await getRequest("https://httpbin.org/get").then((data)=>{ return data });
+*/
+
+async function getAsync(url) {
+  let repsonse = await fetch(url);
+  let data = await repsonse.json();
+  return data;
+}
