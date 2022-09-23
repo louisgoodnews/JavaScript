@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <h2 class="webpage_header">Welcome to rock, paper, scissors!</h2>
+        <br>
+        <p class="webpage_paragraph">Choose on of the following:</p>
+        <button class="webpage_buttons" id="input_rock" onclick="getCurrentChoice(this)">Rock</button>
+        <button class="webpage_buttons" id="input_paper" onclick="getCurrentChoice(this)">Paper</button>
+        <button class="webpage_buttons" id="input_scissors" onclick="getCurrentChoice(this)">Scissors</button>
+        <br>
+        <p class="webpage_paragraph"">You chose:</p>
+        <a id="input_placeholder"></a>
+        <br>
+        <p class="webpage_paragraph">The computer chose:</p>
+        <a id="output_placeholder"></a>
+        <br>
+        <output class="webpage_outputss" id="output_result"></output>
+        <script src="\app.js" async defer></script>
+    </body>
+</html>
