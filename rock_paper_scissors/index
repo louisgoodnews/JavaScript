@@ -29,6 +29,7 @@
         <p class="webpage_paragraph">The computer chose:</p>
         <a id="output_placeholder"></a>
         <br>
+        <br>
         <output class="webpage_outputss" id="output_result"></output>
         <script src="\app.js" async defer></script>
     </body>
