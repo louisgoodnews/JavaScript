@@ -173,8 +173,8 @@ function flipCardElement(cardElement){
     }
     if (checkForMatch()){
 
-        let previousScore = document.getElementById("Score").innerHTML;
-        document.getElementById("Score").innerHTML = previousScore += 1;
+        let previousScore = parseInt(document.getElementById("Score").innerHTML);
+        document.getElementById("Score").innerHTML = (previousScore += 1).toString();
     }
     return;
 }
