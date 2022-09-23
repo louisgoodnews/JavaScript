@@ -1,0 +1,68 @@
+function getCurrentChoice(element){
+
+    const gameOptions = [
+        {
+            "input": "rock",
+            "output": [
+                {
+                    "draw": "rock",
+                    "loss": "paper",
+                    "win": "scissors"
+                }
+            ]        
+        },
+        {
+            "input": "paper",
+            "output": [
+                {
+                    "draw": "paper",
+                    "loss": "scissors",
+                    "win": "rock"
+                }
+            ]        
+        },
+        {
+            "input": "scissors",
+            "output": [
+                {
+                    "draw": "scissors",
+                    "loss": "rock",
+                    "win": "paper"
+                }
+            ]        
+        }
+    ];
+    
+    document.getElementById("input_placeholder").innerHTML = element.innerHTML;
+
+    var possibleResults = ["draw", "loss", "win"];
+    const relevantGameOption = gameOptions.find((gameOption)=>gameOption["input"] == element.innerHTML.toString().toLowerCase());
+    const computerChoice = possibleResults[getRandomInt(possibleResults.length)];
+    const relevantGameOuput = relevantGameOption["output"][0][computerChoice];
+
+    console.log("Player's choice: " + element.innerHTML);
+    console.log("Computer's choice: " + relevantGameOuput);
+    console.log("Game's result: " + computerChoice);
+
+    switch(computerChoice){
+        case(computerChoice.toString() === "win"):
+            document.getElementById("output_placeholder").innerHTML = relevantGameOuput
+            document.getElementById("output_result").innerHTML = "The computer won! Please try again."
+            break;
+        case(computerChoice.toString() === "draw"):
+            document.getElementById("output_placeholder").innerHTML = relevantGameOuput
+            document.getElementById("output_result").innerHTML = "Looks like a draw! Please try again."
+            break;
+        case(computerChoice.toString() === "loss"):
+            document.getElementById("output_placeholder").innerHTML = relevantGameOuput
+            document.getElementById("output_result").innerHTML = "You won, congratulations!"
+            break;
+        default: null;
+    }
+    return;
+}
+
+function getRandomInt(max) {
+
+    return Math.floor(Math.random() * max);
+  }
