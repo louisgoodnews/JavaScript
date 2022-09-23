@@ -1,0 +1,9 @@
+.game_board{
+    height: auto;
+    width: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+.game_board #game_board_cards{
+    display: flex;
+}
