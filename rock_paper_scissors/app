@@ -2,32 +2,32 @@ function getCurrentChoice(element){
 
     const gameOptions = [
         {
-            "input": "rock",
+            "input": "Rock",
             "output": [
                 {
-                    "draw": "rock",
-                    "loss": "paper",
-                    "win": "scissors"
+                    "draw": "Rock",
+                    "loss": "Paper",
+                    "win": "Scissors"
                 }
             ]        
         },
         {
-            "input": "paper",
+            "input": "Paper",
             "output": [
                 {
-                    "draw": "paper",
-                    "loss": "scissors",
-                    "win": "rock"
+                    "draw": "Paper",
+                    "loss": "Scissors",
+                    "win": "Rock"
                 }
             ]        
         },
         {
-            "input": "scissors",
+            "input": "Scissors",
             "output": [
                 {
-                    "draw": "scissors",
-                    "loss": "rock",
-                    "win": "paper"
+                    "draw": "Scissors",
+                    "loss": "Rock",
+                    "win": "paPaperper"
                 }
             ]        
         }
@@ -36,7 +36,7 @@ function getCurrentChoice(element){
     document.getElementById("input_placeholder").innerHTML = element.innerHTML;
 
     var possibleResults = ["draw", "loss", "win"];
-    const relevantGameOption = gameOptions.find((gameOption)=>gameOption["input"] == element.innerHTML.toString().toLowerCase());
+    const relevantGameOption = gameOptions.find((gameOption)=>gameOption["input"] == element.innerHTML.toString());
     const computerChoice = possibleResults[getRandomInt(possibleResults.length)];
     const relevantGameOuput = relevantGameOption["output"][0][computerChoice];
 
@@ -45,15 +45,15 @@ function getCurrentChoice(element){
     console.log("Game's result: " + computerChoice);
 
     switch(computerChoice){
-        case(computerChoice.toString() === "win"):
+        case("win"):
             document.getElementById("output_placeholder").innerHTML = relevantGameOuput
             document.getElementById("output_result").innerHTML = "The computer won! Please try again."
             break;
-        case(computerChoice.toString() === "draw"):
+        case("draw"):
             document.getElementById("output_placeholder").innerHTML = relevantGameOuput
             document.getElementById("output_result").innerHTML = "Looks like a draw! Please try again."
             break;
-        case(computerChoice.toString() === "loss"):
+        case("loss"):
             document.getElementById("output_placeholder").innerHTML = relevantGameOuput
             document.getElementById("output_result").innerHTML = "You won, congratulations!"
             break;
