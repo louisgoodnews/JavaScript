@@ -27,7 +27,7 @@ function getCurrentChoice(element){
                 {
                     "draw": "Scissors",
                     "loss": "Rock",
-                    "win": "paPaperper"
+                    "win": "Paper"
                 }
             ]        
         }
